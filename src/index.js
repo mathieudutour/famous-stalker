@@ -45,7 +45,14 @@ rtm.on(RTM_EVENTS.MESSAGE, (message) => {
   // Listens to all `message` events from the team
   const {text, channel} = message
 
-  if (text && text.indexOf && text.indexOf(`<@${rtm.activeUserId}> info `) !== -1) {
+  const matchingStrings = [
+    `<@${rtm.activeUserId}> info `,
+    `<@${rtm.activeUserId}> infos `,
+    `<@${rtm.activeUserId}>: info `,
+    `<@${rtm.activeUserId}>: infos `
+  ]
+
+  if (text && text.indexOf && matchingStrings.some((s) => text.indexOf(s) !== -1)) {
     const emailToCheck = /<mailto:([A-Za-z0-9@\.]+)\|[A-Za-z0-9@\.]+>/igm.exec(text.split(`<@${rtm.activeUserId}> info `)[1])[1]
     rtm.sendMessage(`ok, will look into ${emailToCheck}`, channel)
 

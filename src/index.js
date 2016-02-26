@@ -16,8 +16,11 @@ if (!process.env.SLACK_TOKEN || !process.env.FULLCONTACT_TOKEN) {
     console.error('* Visit https://portal.fullcontact.com/signup')
     console.error('* Create an account')
   }
+  if (!process.env.SECRET) {
+    console.error('* Invent a secret string')
+  }
   console.error('* Run the following command:')
-  console.error('SLACK_TOKEN=insert_slack_token_here FULLCONTACT_TOKEN=insert_full-contact_key_here npm start')
+  console.error('SLACK_TOKEN=insert_slack_token_here FULLCONTACT_TOKEN=insert_full-contact_key_here SECRET=insert_secret_here npm start')
   console.error('* Run the following command in another tab:')
   console.error('curl -X POST -d @tests/data/post.data http://localhost:5000/')
   console.error('* Check that it commented in your "famous" channel')
@@ -76,8 +79,12 @@ const app = express()
 
 app.post('/', (req, res) => {
   req.pipe(bl((err, body) => {
+    if (!process.env.SECRET) {
+      return res.status(500).send({message: 'SECRET not specified on the stalker, api disabled'})
+    }
     if (err) {
       console.error('error', err)
+      return res.status(500).send(err)
     }
     let data = {}
     try {
@@ -85,15 +92,18 @@ app.post('/', (req, res) => {
     } catch (e) {
       console.error('error', e)
     }
-    const {channel, emailToCheck} = data
-    checkEmail(emailToCheck).then(({message, data}) => {
+    const {channel, emailToCheck, secret} = data
+    if (process.env.SECRET !== secret) {
+      return res.status(401).send({message: 'SECRET not matching, what are you trying to do there? I\'m watching you'})
+    }
+    checkEmail(emailToCheck).then(({message, data, raw}) => {
       if (data) {
         web.chat.postMessage(channel, message, data, logError)
       }
-      res.end()
+      return res.status(200).send({message, data: raw})
     }).catch((e) => {
       console.error('error', e)
-      res.end()
+      return res.status(500).send(err)
     })
   }))
 })

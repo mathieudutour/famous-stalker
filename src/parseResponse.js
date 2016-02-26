@@ -1,9 +1,13 @@
+function findProfile (data, profileType) {
+  return (data.socialProfiles || []).find((profile) => profile.type === profileType)
+}
+
 export default function ({data = {}}) {
   const gender = (data.demographics || {}).gender ? (data.demographics.gender === 'Male' ? 'he' : 'she') : 'he/she'
 
   const fields = []
 
-  const twitter = (data.socialProfiles || []).find((profile) => profile.type === 'twitter')
+  const twitter = findProfile(data, 'twitter')
 
   if (twitter) {
     fields.push({
@@ -13,7 +17,7 @@ export default function ({data = {}}) {
     })
   }
 
-  const linkedin = (data.socialProfiles || []).find((profile) => profile.type === 'linkedin')
+  const linkedin = findProfile(data, 'linkedin')
 
   if (linkedin) {
     fields.push({
@@ -23,7 +27,7 @@ export default function ({data = {}}) {
     })
   }
 
-  const github = (data.socialProfiles || []).find((profile) => profile.type === 'github')
+  const github = findProfile(data, 'github')
 
   if (github) {
     fields.push({

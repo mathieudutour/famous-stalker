@@ -17,7 +17,6 @@ export default function (email, options = {}) {
           return {
             message: '',
             data: {
-              as_user: true,
               icon_emoji: ':eyes:',
               username: 'Stalker',
               attachments: JSON.stringify([{
@@ -30,11 +29,13 @@ export default function (email, options = {}) {
                 text: data.bio,
                 fields: data.fields
               }])
-            }
+            },
+            raw: data
           }
         } else {
           return {
-            message: `${data.name} isn't really famous`
+            message: `${data.name} isn't really famous`,
+            raw: data
           }
         }
       } else {

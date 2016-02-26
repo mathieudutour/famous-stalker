@@ -5,7 +5,7 @@ const FULLCONTACT_TOKEN = process.env.FULLCONTACT_TOKEN
 
 const FULLCONTACT_URL = 'https://api.fullcontact.com/v2'
 
-export default function (email) {
+export default function (email, options = {}) {
   if (!email) {
     return Promise.reject('missing email')
   }
@@ -13,7 +13,7 @@ export default function (email) {
     .then(parseResponse)
     .then((data) => {
       if (data.name) {
-        if (data.followers > 100) {
+        if (data.followers > 100 || options.bypassFamous) {
           return {
             message: '',
             data: {

@@ -1,7 +1,7 @@
 BIN = ./node_modules/.bin
 NPM = npm --loglevel=error
 
-AVA_TARGET=tests/*.js
+AVA_TARGET=tests/index.js
 
 #
 # INSTALL

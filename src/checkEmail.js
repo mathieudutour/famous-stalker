@@ -35,11 +35,12 @@ export default function (email, options = {}) {
         } else {
           return {
             message: `${data.name} isn't really famous`,
-            raw: data
+            raw: data.raw
           }
         }
       } else {
         return {
+          raw: data.raw,
           message: 'Sorry, didn\'t found anything'
         }
       }

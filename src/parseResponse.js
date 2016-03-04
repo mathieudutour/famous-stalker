@@ -53,6 +53,7 @@ export default function ({data = {}}) {
   }
 
   return {
+    raw: data,
     name: (data.contactInfo || {}).fullName,
     photo: ((data.photos || []).find((photo) => photo.isPrimary) || {}).url,
     gender,

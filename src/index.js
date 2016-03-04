@@ -92,11 +92,11 @@ app.post('/', (req, res) => {
     } catch (e) {
       console.error('error', e)
     }
-    const {channel, emailToCheck, secret} = data
+    const {channel, email, secret} = data
     if (process.env.SECRET !== secret) {
       return res.status(401).send({message: 'SECRET not matching, what are you trying to do there? I\'m watching you'})
     }
-    checkEmail(emailToCheck).then(({message, data, raw}) => {
+    checkEmail(email).then(({message, data, raw}) => {
       if (data) {
         web.chat.postMessage(channel, message, data, logError)
       }

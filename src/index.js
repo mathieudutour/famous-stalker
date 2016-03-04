@@ -36,7 +36,7 @@ const web = new WebClient(SLACK_TOKEN)
  */
 
 const rtm = new RtmClient(SLACK_TOKEN, {
-  logLevel: 'debug',
+  logLevel: 'info',
   autoReconnect: true
 })
 

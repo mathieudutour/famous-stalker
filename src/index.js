@@ -94,7 +94,10 @@ app.post('/', (req, res) => {
     }
     const {channel, email, secret} = data
     if (process.env.SECRET !== secret) {
-      return res.status(401).send({message: 'SECRET not matching, what are you trying to do there? I\'m watching you'})
+      return res.status(401).send({
+        message: 'SECRET not matching, what are you trying to do there? I\'m watching you',
+        secret
+      })
     }
     checkEmail(email).then(({message, data, raw}) => {
       if (data) {

@@ -56,7 +56,7 @@ rtm.on(RTM_EVENTS.MESSAGE, (message) => {
   ]
 
   if (text && text.indexOf && matchingStrings.some((s) => text.indexOf(s) !== -1)) {
-    const emailToCheck = /<mailto:([A-Za-z0-9@\.]+)\|[A-Za-z0-9@\.]+>/igm.exec(text.split(`<@${rtm.activeUserId}> info `)[1])[1]
+    const emailToCheck = /<mailto:([A-Za-z0-9@\.]+)\|[A-Za-z0-9@\.]+>/igm.exec(text.split(matchingStrings.find((s) => text.indexOf(s) !== -1))[1])[1]
     rtm.sendMessage(`ok, will look into ${emailToCheck}`, channel)
 
     checkEmail(emailToCheck, {bypassFamous: true}).then(({message, data}) => {

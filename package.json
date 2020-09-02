@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "axios": "^0.13.1",
-    "bl": "^1.1.2",
+    "bl": "^4.0.3",
     "express": "^4.13.4",
     "slack-client": "^2.0.4"
   }
